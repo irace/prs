@@ -1,0 +1,29 @@
+#!/usr/bin/env ruby
+
+require 'optparse'
+require 'yaml'
+require_relative '../lib/github'
+
+options = OpenStruct.new
+
+OptionParser.new do |opts|
+  opts.banner = "Usage: prs [-d]"
+
+  opts.on('-d', '--days [DAYS]', Integer, "Number of days to go back") do |days|
+    options.days = days
+  end
+
+  opts.on('-h', '--help', 'Display this help') do
+    puts opts
+    exit
+  end
+end.parse!
+
+config = YAML.load_file('config.yml')
+
+raise OptionParser::MissingArgument, "Must provide `--days` argument" if options.days.nil?
+
+puts GitHubClient.new(
+  access_token: config['github']['api_token'],
+  repositories: config['github']['repositories']
+).get_pull_requests(options.days).map(&:description)
