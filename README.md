@@ -24,3 +24,7 @@ github:
 ```
 
 You can create a GitHub API token [here](https://github.com/settings/tokens).
+
+## License
+
+Available for use under the MIT license: [http://bryan.mit-license.org](http://bryan.mit-license.org)
